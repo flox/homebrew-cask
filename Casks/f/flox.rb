@@ -21,26 +21,28 @@ cask "flox" do
   pkg "flox-#{version}.#{arch}-darwin.pkg"
 
   uninstall early_script: {
-              executable: "/usr/bin/killall",
-              args:       ["-9", "pkgdb"],
-              sudo:       true,
-            },
-            launchctl:    [
-              "org.nixos.darwin-store",
-              "org.nixos.nix-daemon",
-            ],
-            quit:         [
-              "org.nixos.darwin-store",
-              "org.nixos.nix-daemon",
-            ],
-            script:       {
-              executable: "/usr/local/share/flox/scripts/uninstall",
-              sudo:       true,
-            },
-            pkgutil:      "com.floxdev.flox"
+    executable:   "/usr/bin/killall",
+    args:         ["-9", "pkgdb"],
+    sudo:         true,
+    must_succeed: false,
+  },
+  delete: ["/usr/local/bin/flox"]
 
   zap trash: [
     "~/.cache/flox",
     "~/.config/flox",
-  ]
+  ],
+  launchctl:    [
+    "org.nixos.darwin-store",
+    "org.nixos.nix-daemon",
+  ],
+  quit:         [
+    "org.nixos.darwin-store",
+    "org.nixos.nix-daemon",
+  ],
+  script:       {
+    executable: "/usr/local/share/flox/scripts/uninstall",
+    sudo:       true,
+  },
+  pkgutil:      "com.floxdev.flox"
 end
