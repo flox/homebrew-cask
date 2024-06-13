@@ -54,7 +54,7 @@ cask "flox" do
   zap script: {
         executable: "/bin/sh",
         args:       ["-c", '
-/usr/sbin/diskutil unmount /nix
+/usr/sbin/diskutil unmount /nix || /usr/sbin/lsof /nix
 /usr/sbin/diskutil apfs deleteVolume "Nix Store"
 /usr/bin/dscl . delete /Groups/nixbld || true
 for i in $(seq 1 32); do /usr/bin/dscl . -delete "/Users/_nixbld$i" || true ; done
