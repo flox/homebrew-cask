@@ -20,6 +20,12 @@ cask "flox" do
 
   pkg "flox-#{version}.#{arch}-darwin.pkg"
 
+  postflight do
+    system_command "/bin/sh",
+                   args: ["-c", "echo 'brew upgrade flox' > /usr/local/share/flox/files/update-instructions.txt"],
+                   sudo: true
+  end
+
   uninstall_postflight do
     _, * = system_command "/bin/mv", args: ["/etc/flox-version.update", "/etc/flox-version"], sudo: true
   end
@@ -49,7 +55,8 @@ cask "flox" do
     "],
               sudo:       true,
             },
-            pkgutil:      "com.floxdev.flox"
+            pkgutil:      "com.floxdev.flox",
+            delete:       "/usr/local/share/flox"
 
   zap script: {
         executable: "/bin/sh",
